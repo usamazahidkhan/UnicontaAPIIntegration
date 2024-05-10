@@ -7,7 +7,7 @@ namespace UnicontaAPI
     {
         [FromHeader]
         [Required]
-        public string ApiKey { get; set; }
+        public string APIKey { get; set; }
 
         [FromHeader]
         [Required]

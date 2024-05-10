@@ -32,7 +32,7 @@ app.MapPost("/invoice/create", async (
     [FromBody] CreateInvoiceDto request)
     =>
 {
-    var uniconta = new UnicontaOperations(credentials.ApiKey);
+    var uniconta = new UnicontaOperations(credentials.APIKey);
 
     var result = await uniconta.LoginAsync(credentials.LoginId, credentials.Password);
 

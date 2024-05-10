@@ -2,7 +2,7 @@
 
 namespace UnicontaAPI.Shared
 {
-    public class UnicontaErrorCodeError(ErrorCodes errorCodes)
+    public class UnicontaErrorCodesError(ErrorCodes errorCodes)
         : Error(nameof(ErrorCodes), errorCodes.ToString())
     { }
 }

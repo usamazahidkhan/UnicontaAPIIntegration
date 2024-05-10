@@ -12,13 +12,13 @@ namespace UnicontaAPI
     {
         public UnicontaConnection Connection { get; }
         public Session Session { get; }
-        public Guid ApiKey { get; }
+        public Guid APIKey { get; }
 
         public UnicontaOperations(string apiKey)
         {
             Connection = new UnicontaConnection(APITarget.Live);
             Session = new Session(Connection);
-            this.ApiKey = new Guid(apiKey);
+            this.APIKey = new Guid(apiKey);
         }
 
         public async Task<Result> CreateInvoiceAsync(CreateInvoiceDto request)
@@ -28,7 +28,7 @@ namespace UnicontaAPI
             if (company == null)
             {
                 return Result.Failed(new Error(nameof(request.CompanyId),
-                                               $"Company with CompanyId '{request.CompanyId}' not found"));
+                                     $"Company with CompanyId '{request.CompanyId}' not found"));
             }
 
             var crudAPI = new CrudAPI(Session, company);
@@ -45,7 +45,7 @@ namespace UnicontaAPI
             if (order == null)
             {
                 return Result.Failed(new Error(nameof(request.OrderNumber),
-                                               $"Order with OrderNumber '{request.OrderNumber}' not found"));
+                                     $"Order with OrderNumber '{request.OrderNumber}' not found"));
             }
 
             var orderLines = await crudAPI.Query<DebtorOrderLineClient>(order);
@@ -65,7 +65,7 @@ namespace UnicontaAPI
                 List<Error> errors = [];
                 if (invoiceResult != null)
                 {
-                    errors.Add(new UnicontaErrorCodeError(invoiceResult.Err));
+                    errors.Add(new UnicontaErrorCodesError(invoiceResult.Err));
                 }
                 return Result.Failed(errors, invoiceResult, "Unable to Create an Invoice");
             }
@@ -75,11 +75,11 @@ namespace UnicontaAPI
 
         public async Task<Result> LoginAsync(string loginId, string password)
         {
-            var status = await Session.LoginAsync(loginId, password, LoginType.API, ApiKey);
+            var status = await Session.LoginAsync(loginId, password, LoginType.API, APIKey);
 
             if (status != ErrorCodes.Succes)
             {
-                return Result.Failed(new UnicontaErrorCodeError(status));
+                return Result.Failed(new UnicontaErrorCodesError(status));
             }
             return Result.Success();
         }
