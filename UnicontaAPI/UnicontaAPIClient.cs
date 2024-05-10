@@ -8,13 +8,13 @@ using UnicontaAPI.Shared;
 
 namespace UnicontaAPI
 {
-    public sealed class UnicontaOperations
+    public sealed class UnicontaAPIClient
     {
         public UnicontaConnection Connection { get; }
         public Session Session { get; }
         public Guid APIKey { get; }
 
-        public UnicontaOperations(string apiKey)
+        public UnicontaAPIClient(string apiKey)
         {
             Connection = new UnicontaConnection(APITarget.Live);
             Session = new Session(Connection);
