@@ -35,13 +35,13 @@
                                      $"Company with CompanyId '{request.CompanyId}' not found"));
             }
 
-            var crudAPI = new CrudAPI(Session, company);
-
             var filter = PropValuePair.GenereteWhereElements(
                 nameof(DebtorOrderClient.OrderNumber),
                 request.OrderNumber,
                 CompareOperator.Equal
             );
+            
+            var crudAPI = new CrudAPI(Session, company);
 
             var orders = await crudAPI.Query<DebtorOrderClient>([filter]);
             var order = orders.FirstOrDefault();
@@ -55,7 +55,6 @@
             var orderLines = await crudAPI.Query<DebtorOrderLineClient>(order);
 
             var invoiceAPI = new InvoiceAPI(crudAPI);
-
             var invoiceResult = await invoiceAPI.PostInvoice(
                 order,
                 orderLines,
@@ -64,7 +63,7 @@
                 false
             );
 
-            if (invoiceResult is null || invoiceResult.Err != ErrorCodes.Succes)
+            if (invoiceResult == null || invoiceResult.Err != ErrorCodes.Succes)
             {
                 List<Error> errors = [];
                 
@@ -72,7 +71,6 @@
                 {
                     errors.Add(new(nameof(ErrorCodes), invoiceResult.Err.ToString()));
                 }
-
                 return Result.Failed(errors, invoiceResult, "Unable to Create an Invoice.");
             }
 
