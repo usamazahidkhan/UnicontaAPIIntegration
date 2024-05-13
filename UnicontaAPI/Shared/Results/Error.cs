@@ -1,4 +1,4 @@
-﻿namespace UnicontaAPI
+﻿namespace UnicontaAPI.Shared
 {
     public class Error
     {

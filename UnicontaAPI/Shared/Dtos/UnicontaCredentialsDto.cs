@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
-
-namespace UnicontaAPI
+﻿namespace UnicontaAPI.Shared
 {
     public sealed class UnicontaCredentialsDto
     {

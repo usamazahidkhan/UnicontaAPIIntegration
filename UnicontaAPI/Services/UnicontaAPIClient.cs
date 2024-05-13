@@ -1,12 +1,4 @@
-﻿using Uniconta.API.DebtorCreditor;
-using Uniconta.API.Service;
-using Uniconta.API.System;
-using Uniconta.ClientTools.DataModel;
-using Uniconta.Common;
-using Uniconta.Common.User;
-using UnicontaAPI.Shared;
-
-namespace UnicontaAPI
+﻿namespace UnicontaAPI
 {
     public sealed class UnicontaAPIClient
     {
@@ -19,6 +11,17 @@ namespace UnicontaAPI
             Connection = new UnicontaConnection(APITarget.Live);
             Session = new Session(Connection);
             this.APIKey = new Guid(apiKey);
+        }
+
+        public async Task<Result> LoginAsync(string loginId, string password)
+        {
+            var status = await Session.LoginAsync(loginId, password, LoginType.API, APIKey);
+
+            if (status != ErrorCodes.Succes)
+            {
+                return Result.Failed(new UnicontaErrorCodesError(status));
+            }
+            return Result.Success();
         }
 
         public async Task<Result> CreateInvoiceAsync(CreateInvoiceDto request)
@@ -67,21 +70,10 @@ namespace UnicontaAPI
                 {
                     errors.Add(new UnicontaErrorCodesError(invoiceResult.Err));
                 }
-                return Result.Failed(errors, invoiceResult, "Unable to Create an Invoice");
+                return Result.Failed(errors, invoiceResult, "Unable to Create an Invoice.");
             }
 
-            return Result.Success(invoiceResult);
-        }
-
-        public async Task<Result> LoginAsync(string loginId, string password)
-        {
-            var status = await Session.LoginAsync(loginId, password, LoginType.API, APIKey);
-
-            if (status != ErrorCodes.Succes)
-            {
-                return Result.Failed(new UnicontaErrorCodesError(status));
-            }
-            return Result.Success();
+            return Result.Success(invoiceResult, "Invoice is sucessfully created.");
         }
     }
 }

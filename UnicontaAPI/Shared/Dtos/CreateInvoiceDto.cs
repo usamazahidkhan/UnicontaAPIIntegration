@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace UnicontaAPI
+﻿namespace UnicontaAPI.Shared
 {
     public sealed class CreateInvoiceDto
     {
