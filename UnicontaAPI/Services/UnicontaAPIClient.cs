@@ -19,8 +19,9 @@
 
             if (status != ErrorCodes.Succes)
             {
-                return Result.Failed(new UnicontaErrorCodesError(status));
+                return Result.Failed(new Error(nameof(ErrorCodes), status.ToString()));
             }
+
             return Result.Success();
         }
 
@@ -38,7 +39,7 @@
 
             var filter = PropValuePair.GenereteWhereElements(
                 nameof(DebtorOrderClient.OrderNumber),
-                request.OrderNumber, 
+                request.OrderNumber,
                 CompareOperator.Equal
             );
 
@@ -66,10 +67,12 @@
             if (invoiceResult is null || invoiceResult.Err != ErrorCodes.Succes)
             {
                 List<Error> errors = [];
+                
                 if (invoiceResult != null)
                 {
-                    errors.Add(new UnicontaErrorCodesError(invoiceResult.Err));
+                    errors.Add(new(nameof(ErrorCodes), invoiceResult.Err.ToString()));
                 }
+
                 return Result.Failed(errors, invoiceResult, "Unable to Create an Invoice.");
             }
 

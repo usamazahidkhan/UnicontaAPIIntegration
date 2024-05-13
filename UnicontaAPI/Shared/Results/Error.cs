@@ -1,16 +1,13 @@
 ﻿namespace UnicontaAPI.Shared
 {
-    public class Error
+    public readonly struct Error(string key, IEnumerable<object> values)
     {
-        public Error(object description) => this.Description = description;
-
-        public Error(string code, object description)
+        public Error(string key, object value) : this(key, [value])
         {
-            this.Code = code;
-            this.Description = description;
+            Key = key;
         }
 
-        public string Code { get; }
-        public object Description { get; }
+        public string Key { get; } = key;
+        public IEnumerable<object> Values { get; } = values;
     }
 }
